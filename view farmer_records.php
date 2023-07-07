@@ -1,0 +1,117 @@
+<?php
+
+error_reporting(0);
+session_start();
+   
+   if(!isset($_SESSION['username']))
+   {
+	   header("location:home.html");
+   }
+   elseif($_SESSION['usertype']=='admin')
+   {
+	   header("location:home.html");
+   }
+   
+    
+   $host="localhost";
+   $user="root";
+   $password="";
+   $db="dairy_db";
+   
+   $data=mysqli_connect($host,$user,$password,$db);
+   $sql="SELECT * FROM records ";
+   $result=mysqli_query($data,$sql);
+?>
+<!DOCTYPE html>
+<html lang="eng" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>ADMIN DASHBOARD</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<style type="text/css">
+.table_th{
+	padding: 20px;
+	font-size: 20px;
+	background-color: white;
+	
+}
+
+.table_td(
+     padding: 20px;
+	 background-color: tomato;
+)
+
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+<input  type="checkbox" id="check">
+<label for="check">
+<i class="fas fa-bars" id="btn"></i>
+<i class="fas fa-times" id="cancel"></i>
+</label>
+<div class="sidebar">
+<header>FARMER DASHBOARD</header>
+<ul>
+<li><a href="view_records.php"><i class="fas fa-sliders-h"></i>View records</a></li>
+<li><a href="About.html"><i class="fas fa-question-circle"></i>About</a></li>
+
+<li><a href="logout.php">Logout</a></li>
+</ul>
+</div>
+<section>
+<div class="content">
+<center>
+<h1>Farmers Records Data</h1>
+<?php
+if($_SESSION['message'])
+{
+	echo $_SESSION['message'];
+}
+
+unset($_SESSION['message']);
+
+?>
+<table border="1px">
+<tr>
+<th class="table_th">id</th>
+<th class="table_th">location</th>
+<th class="table_th">quantity</th>
+<th class="table_th">time</th>
+</tr>
+<?php
+
+while($info=$result->fetch_assoc())
+{
+?>
+<tr style="background-color:skyblue">
+<td class="table_td">
+<?php echo "{$info['id']}";?>
+</td>
+<td class="table_td">
+<?php echo "{$info['location']}";?>
+</td>
+<td class="table_td">
+<?php echo "{$info['quantity']}";?>
+</td>
+<td class="table_td">
+<?php echo "{$info['time']}";?>
+</td>
+</tr>
+<?php
+}
+?>
+<tr
+</table>
+</center>
+</div>
+</section>
+</body>
+</html>
